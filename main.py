@@ -11,11 +11,21 @@ def ssort(L):
         L[0], L[m] = L[m], L[0]
         print('recursively sorting L=%s\n' % L[1:])
         return [L[0]] + selection_sort(L[1:])
-        
+
 def qsort(a, pivot_fn):
-    ## TO DO
-    pass
-    
+  #Base case if length of list is 0 or 1
+  if len(a) <= 1:
+    return a
+  else: 
+    piv = pivot_fn(a)
+    greater_piv = [x for x in a if x > piv]
+    less_piv = [x for x in a if x < piv]
+    eq_piv = [x for x in a if x == piv]
+
+  return qsort(less_piv, pivot_fn) + eq_piv + qsort(greater_piv, pivot_fn)
+
+
+
 def time_search(sort_fn, mylist):
     """
     Return the number of milliseconds to run this
@@ -50,9 +60,9 @@ def compare_sort(sizes=[100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 10
       for each method to run on each value of n
     """
     ### TODO - sorting algorithms for comparison
-    qsort_fixed_pivot = # 
-    qsort_random_pivot = #
-    tim_sort = #
+    qsort_fixed_pivot = lambda a: qsort(a, lambda b: b[0])
+    qsort_random_pivot = lambda a: qsort(a, lambda b: random.choice(b))
+    tim_sort = lambda a: sorted(a)
     result = []
     for size in sizes:
         # create list in ascending order
@@ -63,6 +73,7 @@ def compare_sort(sizes=[100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 10
             len(mylist),
             time_search(qsort_fixed_pivot, mylist),
             time_search(qsort_random_pivot, mylist),
+            time_search(tim_sort, mylist)
         ])
     return result
     ###
@@ -79,3 +90,4 @@ def test_print():
 
 random.seed()
 test_print()
+
